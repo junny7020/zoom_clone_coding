@@ -19,7 +19,7 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
     sockets.push(socket);
-    socket["nickname"] = "June";
+    socket["nickname"] = "Anonymous";
     console.log("Connected to the Browser");
     socket.on("close", () => console.log("disconnected from the browser"));
     socket.on("message", (msg) => {
@@ -35,7 +35,6 @@ wss.on("connection", (socket) => {
             break;
         }
     });
-    socket.send("hello!!");
 });
 
 server.listen(3000, handleListen);
