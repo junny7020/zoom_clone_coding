@@ -22,8 +22,9 @@ wsServer.on("connection",socket => {
     console.log(`Socket Event:${event}`);
   });
   // only one function is allowed at the end
-  socket.on("enter_room", (roomName, done) => {
+  socket.on("enter_room", (nickName, roomName, done) => {
     socket.join(roomName);
+    socket["nickname"] = nickName;
     done();
     socket.to(roomName).emit("welcome", socket.nickname);
   });
