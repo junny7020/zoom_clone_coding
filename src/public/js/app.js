@@ -24,11 +24,13 @@ function handleMessageSubmit(event){
     input.value = "";
 }
 
-function handleNIcknameSubmit(event){
+function handleNicknameChangeSubmit(event){
     event.preventDefault();
-    const input = room.querySelector("#name input");
-    input.setAttribute("placeholder", nickName);
+    const input = room.querySelector("#name_change input");
+    addMessage(`$Your nickname(${nickName}) has changed to==> ${input.value}`);
     socket.emit("nickname", input.value);
+    span = room.querySelector("span");
+    span.innerText = `My nickname: ${input.value}`;
 }
 
 function showRoom() {
@@ -39,8 +41,8 @@ function showRoom() {
     span = room.querySelector("span");
     span.innerText = `My nickname: ${nickName}`;
     const msgForm = room.querySelector("#msg");
-    // const nameForm = room.querySelector("#name");
-    // nameForm.addEventListener("submit", handleNIcknameSubmit);
+    const nameChangeForm = room.querySelector("#name_change");
+    nameChangeForm.addEventListener("submit", handleNicknameChangeSubmit);
     msgForm.addEventListener("submit", handleMessageSubmit);
 }
 
@@ -63,15 +65,32 @@ function handleRoomSubmit(event){
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on("welcome", (user) => {
+socket.on("welcome", (user, newCount) => {
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
     addMessage(`${user} has joined!`);
 });
 
-socket.on("bye", (left) => {
+socket.on("bye", (left, newCount) => {
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
     addMessage(`${left} has left`);
 });
 
 socket.on("new_message", addMessage);
+
+socket.on("room_change", (rooms) =>{
+    const roomList = welcome.querySelector("ul");
+    roomList.innerHTML = "";
+    if(rooms.length === 0){
+        return;
+    }
+    rooms.forEach(room =>{
+        const li = document.createElement("li");
+        li.innerText = room;
+        roomList.appendChild(li);
+    });
+});
 // const messageList = document.querySelector("ul");
 // const messageForm = document.querySelector("#message");
 // const nickForm = document.querySelector("#nick");
