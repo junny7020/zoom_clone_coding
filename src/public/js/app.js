@@ -29,7 +29,7 @@ function handleNicknameChangeSubmit(event){
     const input = room.querySelector("#name_change input");
     addMessage(`$Your nickname(${nickName}) has changed to==> ${input.value}`);
     socket.emit("nickname", input.value);
-    span = room.querySelector("span");
+    const span = room.querySelector("span");
     span.innerText = `My nickname: ${input.value}`;
 }
 
@@ -38,7 +38,7 @@ function showRoom() {
     room.hidden = false;
     const h3 = room.querySelector("h3");
     h3.innerText = `Room ${roomName}`;
-    span = room.querySelector("span");
+    const span = room.querySelector("span");
     span.innerText = `My nickname: ${nickName}`;
     const msgForm = room.querySelector("#msg");
     const nameChangeForm = room.querySelector("#name_change");
